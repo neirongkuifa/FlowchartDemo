@@ -50,14 +50,19 @@ const Flowchart = props => {
 
 	/**
 	 * Update node position and update json
-	 * @function handleDrop
+	 * @function handleDrag
 	 * @param {string} id
 	 * @param {Object} position
 	 */
-	const handleDrop = (id, position) => {
+	const handleDrag = (id, position) => {
 		const update = { ...nodes }
 		update[id].set(position.x, position.y)
-		props.setJson(JSON.stringify({ nodes: Object.values(update) }))
+		props.setJson(
+			JSON.stringify({
+				nodes: Object.values(update),
+				links: Object.values(links)
+			})
+		)
 		setNodes(update)
 	}
 
@@ -178,7 +183,7 @@ const Flowchart = props => {
 					key={nodes[key].id}
 					{...nodes[key]}
 					handleDelete={handleDeleteNode}
-					handleDrop={handleDrop}
+					handleDrag={handleDrag}
 					setTempLink={setTempLink}
 				/>
 			)

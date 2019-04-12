@@ -9,10 +9,10 @@ const Node = props => {
 			handle='.handle'
 			defaultPosition={{ x: props.x, y: props.y }}
 			position={null}
-			grid={[25, 25]}
+			grid={[1, 1]}
 			offsetParent={document.getElementById('canvas')}
 			bounds='parent'
-			onStop={(e, position) => props.handleDrop(props.id, position)}
+			onDrag={(e, position) => props.handleDrag(props.id, position)}
 			scale={1}>
 			<div id={props.id} style={styles.container}>
 				<div style={styles.delete} onClick={() => props.handleDelete(props.id)}>
