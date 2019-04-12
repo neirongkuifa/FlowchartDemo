@@ -1,7 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
+/**
+ * Function Component that only re-render when props change
+ * @function
+ * @param {*} props
+ * @returns
+ */
 const DisplayJSON = props => {
 	return <div>{props.json}</div>
 }
 
-export default DisplayJSON
+DisplayJSON.propTypes = {
+	json: PropTypes.string
+}
+
+export default React.memo(DisplayJSON)

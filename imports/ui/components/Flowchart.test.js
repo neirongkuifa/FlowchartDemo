@@ -31,10 +31,10 @@ if (Meteor.isClient) {
 			expect(node.text()).to.contain('-')
 		})
 
-		it('adds a link when you click one port and another port', () => {})
+		// TODO Test Drag and Drop
+		it('adds a link when you click one port and drop on another element')
 
-		it('updates json when there is a new link')
-
-		it('updates json when there is a new node')
+		// TODO Test Deletion
+		it('deletes a node and links on this node')
 	})
 }

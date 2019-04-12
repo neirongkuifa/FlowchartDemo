@@ -2,6 +2,12 @@ import React from 'react'
 import Draggable from 'react-draggable'
 import PropTypes from 'prop-types'
 
+/**
+ * Function Component that returns a node
+ * @function
+ * @param {*} props
+ * @returns
+ */
 const Node = props => {
 	return (
 		<Draggable
@@ -24,6 +30,7 @@ const Node = props => {
 				<div style={styles.ports}>
 					<div style={styles.port}>in</div>
 					<div
+						data-test='port-out'
 						onMouseDown={e => {
 							props.setTempLink({
 								from: { x: props.x - 17, y: props.y - 2 },
@@ -43,7 +50,8 @@ Node.propTypes = {
 	x: PropTypes.number,
 	y: PropTypes.number,
 	handleDelete: PropTypes.func,
-	handleMouseDown: PropTypes.func
+	handleDrag: PropTypes.func,
+	setTempLink: PropTypes.func
 }
 
 const styles = {

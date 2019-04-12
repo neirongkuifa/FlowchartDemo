@@ -1,11 +1,14 @@
+/**
+ * Model for node instance
+ * @class Node
+ */
 class Node {
-	// ToDo Add in and out
 	constructor(x, y, symbol) {
 		this.id = Date.now().toString()
 		this.x = x
 		this.y = y
-		this.portOut = new Set()
-		this.portIn = new Set()
+		this.portOut = {}
+		this.portIn = {}
 		this.symbol = symbol
 	}
 

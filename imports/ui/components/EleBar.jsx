@@ -1,5 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
+/**
+ * Function Component that only re-render when props change
+ * @function
+ * @param {*} props
+ * @returns
+ */
 const EleBar = props => {
 	return (
 		<div style={styles.eleContainer}>
@@ -44,6 +51,10 @@ const styles = {
 	eleContainer: {
 		display: 'flex'
 	}
+}
+
+EleBar.propTypes = {
+	handleClickEle: PropTypes.func
 }
 
 export default React.memo(EleBar)

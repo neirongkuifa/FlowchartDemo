@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import Node_Model from '../models/node'
 import Link_Model from '../models/link'
 import Node from './Node'
 import EleBar from './EleBar'
 
+/**
+ * Funtion Component that contains elements bar and flowchart
+ * @function
+ * @param {Object} props
+ * @returns
+ */
 const Flowchart = props => {
 	const [nodes, setNodes] = useState({})
 	const [links, setLinks] = useState({})
@@ -32,20 +39,36 @@ const Flowchart = props => {
 	}
 
 	/**
-	 * Delete a node and update json
+	 * Delete a node and all links on it and update json
 	 * @function handleDeleteNode
 	 * @param {string} id
 	 */
 	const handleDeleteNode = id => {
-		const update = { ...nodes }
-		delete update[id]
+		const nodeUpdate = { ...nodes }
+		const linkUpdate = { ...links }
+
+		const node = nodes[id]
+		for (let key in node.portIn) {
+			const from = links[key].from
+			delete nodeUpdate[from].portOut[key]
+			delete linkUpdate[key]
+		}
+
+		for (let key in node.portOut) {
+			const to = links[key].to
+			delete nodeUpdate[to].portIn[key]
+			delete linkUpdate[key]
+		}
+
+		delete nodeUpdate[id]
 		props.setJson(
 			JSON.stringify({
-				nodes: Object.values(update),
-				links: Object.values(links)
+				nodes: Object.values(nodeUpdate),
+				links: Object.values(linkUpdate)
 			})
 		)
-		setNodes(update)
+		setNodes(nodeUpdate)
+		setLinks(linkUpdate)
 	}
 
 	/**
@@ -70,9 +93,6 @@ const Flowchart = props => {
 	 * Create a temporary link. Set tempLink state. Do not update json and links before drop
 	 * @function handleMouseDown
 	 * @param {Object} e - mouse down event
-	 * @param {string} id - nodes that triggered event
-	 * @param {number} x - position
-	 * @param {number} y - position
 	 */
 	const handleMouseDown = e => {
 		if (tempLink) {
@@ -95,9 +115,6 @@ const Flowchart = props => {
 	 * Function to handle mouse move event
 	 * @function handleMouseMove
 	 * @param {Object} e - mouse move event
-	 * @param {string} id - nodes that triggered event
-	 * @param {number} x - position
-	 * @param {number} y - position
 	 */
 	const handleMouseMove = e => {
 		if (tempLink && tempLink.from) {
@@ -117,16 +134,12 @@ const Flowchart = props => {
 	 * Function to handle mouse up event
 	 * @function handleMouseUp
 	 * @param {Object} e - mouse up event
-	 * @param {string} id - nodes that triggered event
-	 * @param {number} x - position
-	 * @param {number} y - position
 	 */
 	const handleMouseUp = e => {
 		if (tempLink) {
 			const canvas = document.getElementById('canvas')
 			const mouseX = e.clientX - canvas.offsetLeft
 			const mouseY = e.clientY - canvas.offsetTop
-			console.log(mouseX + ' ' + mouseY)
 			const to = inNode(mouseX, mouseY)
 			if (to) {
 				const link = new Link_Model(tempLink.id, to.id)
@@ -134,19 +147,20 @@ const Flowchart = props => {
 				linkUpdate[link.id] = link
 
 				const nodeUpdate = { ...nodes }
-				nodeUpdate[tempLink.id].portOut.add(link.id)
-				nodeUpdate[to.id].portIn.add(link.id)
+
+				// JSON.stringify does not support set so we use obj property with dummy null to mock
+				nodeUpdate[tempLink.id].portOut[link.id] = null
+				nodeUpdate[to.id].portIn[link.id] = null
+
+				setLinks(linkUpdate)
+				setNodes(nodeUpdate)
+
 				props.setJson(
 					JSON.stringify({
 						nodes: Object.values(nodeUpdate),
 						links: Object.values(linkUpdate)
 					})
 				)
-				console.log('A')
-				setLinks(linkUpdate)
-				console.log('B')
-				setNodes(nodeUpdate)
-				console.log('C')
 			}
 		}
 		setTempLink(null)
@@ -163,7 +177,6 @@ const Flowchart = props => {
 		let node
 		for (let k in nodes) {
 			node = nodes[k]
-			console.log(node)
 			if (x >= node.x && x < node.x + 70 && y >= node.y && y < node.y + 95) {
 				return node
 			}
@@ -181,6 +194,7 @@ const Flowchart = props => {
 				<Node
 					data-test='node'
 					key={nodes[key].id}
+					id={nodes[key].id}
 					{...nodes[key]}
 					handleDelete={handleDeleteNode}
 					handleDrag={handleDrag}
@@ -272,6 +286,10 @@ const styles = {
 		top: '0px',
 		left: '0px'
 	}
+}
+
+Flowchart.propTypes = {
+	setJson: PropTypes.func
 }
 
 export default Flowchart
