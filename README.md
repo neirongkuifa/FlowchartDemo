@@ -1,4 +1,4 @@
-# Flowchar Demo
+# Flowchart Demo
 
 ## Installation and Run
 
