@@ -26,7 +26,7 @@ const Node = props => {
 		// if node has outgoing link, propagate node value change
 		if (updateNodes[props.id].portOut !== '') {
 			const out = updateNodes[props.links[updateNodes[props.id].portOut].to].id
-			propagateNodeValue(props.links, updateNodes, out)
+			propagateNodeValue(props.links, updateNodes, out, props.setDisplayValue)
 		}
 
 		props.setNodes(updateNodes)

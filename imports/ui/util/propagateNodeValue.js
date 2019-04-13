@@ -5,15 +5,22 @@
  * @param { Object } nodes
  * @param { string } id
  */
-const propagateNodeValue = (links, nodes, id) => {
+const defaultErrHandler = () => console.log('Calculation Error!')
+
+const propagateNodeValue = (
+	links,
+	nodes,
+	id,
+	errHandler = defaultErrHandler
+) => {
 	const keys = Object.keys(nodes[id].portIn)
 	if (keys.length === 2) {
-		const arg1 =
+		let arg1 =
 			nodes[id].portIn[keys[0]] === '1'
 				? nodes[links[keys[0]].from].value
 				: nodes[links[keys[1]].from].value
 
-		const arg2 =
+		let arg2 =
 			nodes[id].portIn[keys[0]] === '1'
 				? nodes[links[keys[1]].from].value
 				: nodes[links[keys[0]].from].value
@@ -28,6 +35,12 @@ const propagateNodeValue = (links, nodes, id) => {
 				nodes[id].value = arg1 * arg2
 				break
 			case '÷':
+				if (arg2 === 0) {
+					errHandler(
+						'arg2 of Divide cannot be 0, please enter a different value!'
+					)
+					arg2 = 1
+				}
 				nodes[id].value = arg1 / arg2
 				break
 		}

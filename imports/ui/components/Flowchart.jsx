@@ -17,7 +17,7 @@ const Flowchart = props => {
 	const [nodes, setNodes] = useState({})
 	const [links, setLinks] = useState({})
 	const [tempLink, setTempLink] = useState(null)
-	const [displayValue, setDisplayValue] = useState(0)
+	const [displayValue, setDisplayValue] = useState('')
 
 	const nodesOnCanvas = []
 	const linksOnCanvas = []
@@ -158,6 +158,7 @@ const Flowchart = props => {
 			const to = inNode(mouseX, mouseY)
 
 			// Cannot establish link when link to itself, link to a number, target has two args, target does not exist
+
 			if (
 				to &&
 				to.symbol !== '_' &&
@@ -179,7 +180,7 @@ const Flowchart = props => {
 				// Calculate operator node value once two args are ready
 				if (Object.keys(to.portIn).length === 1) {
 					nodeUpdate[to.id].portIn[link.id] = '2'
-					propagateNodeValue(linkUpdate, nodeUpdate, to.id)
+					propagateNodeValue(linkUpdate, nodeUpdate, to.id, setDisplayValue)
 				} else {
 					nodeUpdate[to.id].portIn[link.id] = '1'
 				}
@@ -249,8 +250,14 @@ const Flowchart = props => {
 		for (let key in links) {
 			from = nodes[links[key].from]
 			to = nodes[links[key].to]
-			const path = `M${from.x + 70},${from.y + 95} C${from.x + 70},${from.y +
-				125} ${to.x},${to.y + 120} ${to.x},${to.y + 90}`
+			let path
+			if (to.portIn[key] === '2') {
+				path = `M${from.x + 70},${from.y + 95} C${from.x + 70},${from.y +
+					125} ${to.x + 25},${to.y + 120} ${to.x + 25},${to.y + 90}`
+			} else {
+				path = `M${from.x + 70},${from.y + 95} C${from.x + 70},${from.y +
+					125} ${to.x + 9},${to.y + 120} ${to.x + 9},${to.y + 90}`
+			}
 
 			linksOnCanvas.push(
 				<path
@@ -336,7 +343,7 @@ const styles = {
 	},
 	floatR: {
 		float: 'right',
-		fontSize: '1.5rem',
+		fontSize: '1rem',
 		clear: 'both'
 	}
 }
