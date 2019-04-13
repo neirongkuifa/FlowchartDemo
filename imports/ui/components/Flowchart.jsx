@@ -171,7 +171,7 @@ const Flowchart = props => {
 				// Update Nodes
 				const nodeUpdate = { ...nodes }
 
-				// JSON.stringify does not support set so we use obj property with dummy null
+				// Set portOut to link
 				nodeUpdate[tempLink.id].portOut = link.id
 
 				// Calculate operator node value once two args are ready
@@ -226,6 +226,8 @@ const Flowchart = props => {
 					nodes[id].value = arg1 / arg2
 					break
 			}
+
+			// If node has outgoing link, propagate result
 			if (nodes[id].portOut !== '') {
 				propagateNodeValueUpdate(links, nodes, links[nodes[id].portOut].to)
 			}
@@ -279,6 +281,7 @@ const Flowchart = props => {
 	 * @function updateLinksOnCanvas
 	 */
 	const updateLinksOnCanvas = () => {
+		// update links
 		let from, to
 		for (let key in links) {
 			from = nodes[links[key].from]
@@ -297,6 +300,8 @@ const Flowchart = props => {
 				/>
 			)
 		}
+
+		//update temporary link
 		if (tempLink && tempLink.to) {
 			from = tempLink.from
 			to = tempLink.to
