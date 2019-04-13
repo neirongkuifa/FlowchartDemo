@@ -22,6 +22,9 @@ TEST_BROWSER_DRIVER=chrome TEST_WATCH=1 meteor test --driver-package meteortesti
 
 ## Usage
 
+Overall Effect
+![](./images/Demo.gif)
+
 Click elements on element bar to get a new instance of node
 ![](./images/DragNDropEle.gif)
 
