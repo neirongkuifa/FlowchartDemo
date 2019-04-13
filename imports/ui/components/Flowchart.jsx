@@ -138,8 +138,8 @@ const Flowchart = props => {
 	const handleMouseUp = e => {
 		if (tempLink) {
 			const canvas = document.getElementById('canvas')
-			const mouseX = e.clientX - canvas.offsetLeft
-			const mouseY = e.clientY - canvas.offsetTop
+			const mouseX = e.pageX - canvas.offsetLeft
+			const mouseY = e.pageY - canvas.offsetTop
 			const to = inNode(mouseX, mouseY)
 			if (to) {
 				const link = new Link_Model(tempLink.id, to.id)
@@ -218,6 +218,7 @@ const Flowchart = props => {
 
 			linksOnCanvas.push(
 				<path
+					data-test='link'
 					key={key}
 					d={path}
 					stroke={'black'}
@@ -231,8 +232,10 @@ const Flowchart = props => {
 			to = tempLink.to
 			const path = `M${from.x + 70},${from.y + 95} C${from.x + 70},${from.y +
 				125} ${to.x},${to.y + 120} ${to.x},${to.y + 90}`
+
 			linksOnCanvas.push(
 				<path
+					data-test='link-temp'
 					key={'temp'}
 					d={path}
 					stroke={'black'}
@@ -251,12 +254,15 @@ const Flowchart = props => {
 			<EleBar handleClickEle={handleClickEle} />
 			<hr />
 			<div
+				data-test='canvas'
 				id='canvas'
 				style={styles.canvas}
 				onMouseDown={e => handleMouseDown(e)}
 				onMouseMove={e => handleMouseMove(e)}
 				onMouseUp={e => handleMouseUp(e)}>
-				<svg style={styles.links}>{linksOnCanvas}</svg>
+				<svg data-test='links' style={styles.links}>
+					{linksOnCanvas}
+				</svg>
 				<div style={styles.nodes}>{nodesOnCanvas}</div>
 			</div>
 			<hr />

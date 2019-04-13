@@ -20,7 +20,7 @@ const Node = props => {
 			bounds='parent'
 			onDrag={(e, position) => props.handleDrag(props.id, position)}
 			scale={1}>
-			<div id={props.id} style={styles.container}>
+			<div data-test='node-draggable' id={props.id} style={styles.container}>
 				<div style={styles.delete} onClick={() => props.handleDelete(props.id)}>
 					Delete
 				</div>
