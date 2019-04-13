@@ -15,4 +15,4 @@ DisplayJSON.propTypes = {
 	json: PropTypes.string
 }
 
-export default React.memo(DisplayJSON)
+export default DisplayJSON

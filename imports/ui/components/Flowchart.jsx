@@ -25,17 +25,18 @@ const Flowchart = props => {
 	 * @function handleClickEle
 	 * @param {string} sign
 	 */
-	const handleClickEle = sign => {
-		const node = new Node_Model(0, 0, sign)
+	const handleClickEle = symbol => {
+		const node = new Node_Model(0, 0, symbol, 0)
 		const update = { ...nodes }
 		update[node.id] = node
+		setNodes(update)
+
 		props.setJson(
 			JSON.stringify({
 				nodes: Object.values(update),
 				links: Object.values(links)
 			})
 		)
-		setNodes(update)
 	}
 
 	/**
@@ -47,19 +48,31 @@ const Flowchart = props => {
 		const nodeUpdate = { ...nodes }
 		const linkUpdate = { ...links }
 
+		// if node is an arg of an operator, make sure the left arg is always the first arg
+		if (nodes[id].portOut !== '') {
+			const keys = Object.keys(nodeUpdate[links[nodes[id].portOut].to].portIn)
+			if (keys.length === 2) {
+				nodeUpdate[links[nodes[id].portOut].to].portIn[keys[0]] = '1'
+				nodeUpdate[links[nodes[id].portOut].to].portIn[keys[1]] = '1'
+			}
+		}
+
+		// Remove incoming links
 		const node = nodes[id]
 		for (let key in node.portIn) {
 			const from = links[key].from
-			delete nodeUpdate[from].portOut[key]
+			nodeUpdate[from].portOut = ''
 			delete linkUpdate[key]
 		}
 
-		for (let key in node.portOut) {
-			const to = links[key].to
-			delete nodeUpdate[to].portIn[key]
-			delete linkUpdate[key]
+		// if node's out port is nonempty, Remove outgoing links
+		if (node.portOut !== '') {
+			const to = links[node.portOut].to
+			delete nodeUpdate[to].portIn[node.portOut]
+			delete linkUpdate[node.portOut]
 		}
 
+		// Delete Node
 		delete nodeUpdate[id]
 		props.setJson(
 			JSON.stringify({
@@ -141,18 +154,33 @@ const Flowchart = props => {
 			const mouseX = e.pageX - canvas.offsetLeft
 			const mouseY = e.pageY - canvas.offsetTop
 			const to = inNode(mouseX, mouseY)
-			if (to) {
+
+			// Cannot establish link when link to itself, link to a number, target has two args, target does not exist
+			if (
+				to &&
+				to.symbol !== '_' &&
+				Object.keys(to.portIn).length < 2 &&
+				tempLink.id !== to.id
+			) {
+				// Update Links
 				const link = new Link_Model(tempLink.id, to.id)
 				const linkUpdate = { ...links }
 				linkUpdate[link.id] = link
+				setLinks(linkUpdate)
 
+				// Update Nodes
 				const nodeUpdate = { ...nodes }
 
-				// JSON.stringify does not support set so we use obj property with dummy null to mock
-				nodeUpdate[tempLink.id].portOut[link.id] = null
-				nodeUpdate[to.id].portIn[link.id] = null
+				// JSON.stringify does not support set so we use obj property with dummy null
+				nodeUpdate[tempLink.id].portOut = link.id
 
-				setLinks(linkUpdate)
+				// Calculate operator node value once two args are ready
+				if (Object.keys(to.portIn).length === 1) {
+					nodeUpdate[to.id].portIn[link.id] = '2'
+					propagateNodeValueUpdate(linkUpdate, nodeUpdate, to.id)
+				} else {
+					nodeUpdate[to.id].portIn[link.id] = '1'
+				}
 				setNodes(nodeUpdate)
 
 				props.setJson(
@@ -164,6 +192,44 @@ const Flowchart = props => {
 			}
 		}
 		setTempLink(null)
+	}
+
+	/**
+	 * Propagete node value when the first node have two args
+	 * @function
+	 * @param { Object } nodes
+	 * @param { string } id
+	 */
+	const propagateNodeValueUpdate = (links, nodes, id) => {
+		const keys = Object.keys(nodes[id].portIn)
+		if (keys.length === 2) {
+			const arg1 =
+				nodes[id].portIn[keys[0]] === '1'
+					? nodes[links[keys[0]].from].value
+					: nodes[links[keys[1]].from].value
+
+			const arg2 =
+				nodes[id].portIn[keys[0]] === '1'
+					? nodes[links[keys[1]].from].value
+					: nodes[links[keys[0]].from].value
+			switch (nodes[id].symbol) {
+				case '+':
+					nodes[id].value = arg1 + arg2
+					break
+				case '-':
+					nodes[id].value = arg1 - arg2
+					break
+				case '×':
+					nodes[id].value = arg1 * arg2
+					break
+				case '÷':
+					nodes[id].value = arg1 / arg2
+					break
+			}
+			if (nodes[id].portOut !== '') {
+				propagateNodeValueUpdate(links, nodes, links[nodes[id].portOut].to)
+			}
+		}
 	}
 
 	/**
@@ -195,9 +261,13 @@ const Flowchart = props => {
 					data-test='node'
 					key={nodes[key].id}
 					id={nodes[key].id}
+					nodes={nodes}
+					links={links}
 					{...nodes[key]}
 					handleDelete={handleDeleteNode}
 					handleDrag={handleDrag}
+					setNodes={setNodes}
+					setJson={props.setJson}
 					setTempLink={setTempLink}
 				/>
 			)
@@ -249,6 +319,7 @@ const Flowchart = props => {
 	updateLinksOnCanvas()
 	updateNodesOnCanvas()
 
+	// Component View
 	return (
 		<div>
 			<EleBar handleClickEle={handleClickEle} />
@@ -270,6 +341,7 @@ const Flowchart = props => {
 	)
 }
 
+// Style Info
 let window // Remove when finish test
 const styles = {
 	canvas: {

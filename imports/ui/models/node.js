@@ -3,13 +3,14 @@
  * @class Node
  */
 class Node {
-	constructor(x, y, symbol) {
+	constructor(x, y, symbol, value) {
 		this.id = Date.now().toString()
 		this.x = x
 		this.y = y
-		this.portOut = {}
+		this.portOut = ''
 		this.portIn = {}
 		this.symbol = symbol
+		this.value = value
 	}
 
 	set(x, y) {

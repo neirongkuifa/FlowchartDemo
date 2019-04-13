@@ -34,6 +34,12 @@ const EleBar = props => {
 				onClick={() => props.handleClickEle('÷')}>
 				÷
 			</div>
+			<div
+				data-test='ele-num'
+				style={styles.element}
+				onClick={() => props.handleClickEle('_')}>
+				_
+			</div>
 		</div>
 	)
 }
