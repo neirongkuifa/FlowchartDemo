@@ -23,13 +23,7 @@ TEST_BROWSER_DRIVER=chrome TEST_WATCH=1 meteor test --driver-package meteortesti
 ## Usage
 
 Overall Effect
-![](./images/Demo.gif)
+![](./images/overall.fig.gif)
 
 Click elements on element bar to get a new instance of node
-![](./images/DragNDropEle.gif)
-
-Click **in** on node and move it onto another node and realse mouse to link nodes
-![](./images/LinkNode.gif)
-
-Click **Delete** on node to remove node and its associated links and update its associated nodes port data
-![](./images/DeleteNode.gif)
+![](./images/dragdroptoadd.gif)

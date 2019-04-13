@@ -52,7 +52,8 @@ const styles = {
 		textAlign: 'center',
 		fontSize: '3rem',
 		margin: '2px 5px',
-		lineHeight: '70px'
+		lineHeight: '70px',
+		userSelect: 'none'
 	},
 	eleContainer: {
 		display: 'flex'
