@@ -10,7 +10,7 @@ import EleBar from './EleBar'
  * Funtion Component that contains elements bar and flowchart
  * @function
  * @param {Object} props
- * @returns
+ * @returns {Object}
  */
 const Flowchart = props => {
 	const [nodes, setNodes] = useState({})
@@ -171,7 +171,7 @@ const Flowchart = props => {
 	 * @function inNode
 	 * @param {number} x
 	 * @param {number} y
-	 * @returns
+	 * @returns {(Object|null)}
 	 */
 	const inNode = (x, y) => {
 		let node

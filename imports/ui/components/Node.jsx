@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
  * Function Component that returns a node
  * @function
  * @param {*} props
- * @returns
+ * @returns {Object}
  */
 const Node = props => {
 	return (

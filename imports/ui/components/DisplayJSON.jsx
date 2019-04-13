@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
  * Function Component that only re-render when props change
  * @function
  * @param {*} props
- * @returns
+ * @returns {Object}
  */
 const DisplayJSON = props => {
 	return <div>{props.json}</div>
