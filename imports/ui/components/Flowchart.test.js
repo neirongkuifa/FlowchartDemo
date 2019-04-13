@@ -31,7 +31,6 @@ if (Meteor.isClient) {
 			expect(node.text()).to.contain('-')
 		})
 
-		// TODO Test Drag and Drop
 		it('adds a link when you click one port and drop on another element', () => {
 			const container = document.createElement('div')
 			document.body.appendChild(container)
@@ -80,6 +79,57 @@ if (Meteor.isClient) {
 		})
 
 		// TODO Test Deletion
-		it('deletes a node and links on this node')
+		it('deletes a node and links on this node', () => {
+			const container = document.createElement('div')
+			document.body.appendChild(container)
+			ReactDOM.render(<Flowchart setJson={() => {}} />, container)
+
+			const el1 = container.querySelector("[data-test='ele-minus']")
+
+			Simulate.click(el1)
+
+			const el2 = container.querySelector("[data-test='ele-plus']")
+
+			Simulate.click(el2)
+
+			let nodes = container.querySelectorAll("[data-test='node-draggable']")
+			const out = nodes[0].querySelector("[data-test='port-out']")
+			const canvas = container.querySelector("[data-test='canvas']")
+
+			Simulate.mouseDown(out, {
+				pageX: 0,
+				pageY: 0
+			})
+
+			Simulate.mouseDown(canvas, {
+				pageX: 0,
+				pageY: 0
+			})
+
+			let tempLink = container.querySelectorAll("[data-test='link-temp']")
+			expect(tempLink.length).to.equal(1)
+
+			Simulate.mouseMove(canvas, {
+				pageX: 0,
+				pageY: 0
+			})
+
+			Simulate.mouseUp(canvas, {
+				pageX: 50,
+				pageY: 150
+			})
+
+			let links = container.querySelectorAll("[data-test='link']")
+			expect(links.length).to.equal(1)
+			expect(nodes.length).to.equal(2)
+			const delEl = nodes[0].querySelector("[data-test='delete']")
+
+			Simulate.click(delEl)
+
+			nodes = container.querySelectorAll("[data-test='node-draggable']")
+			links = container.querySelectorAll("[data-test='link']")
+			expect(links.length).to.equal(0)
+			expect(nodes.length).to.equal(1)
+		})
 	})
 }
