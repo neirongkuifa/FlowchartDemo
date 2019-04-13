@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Draggable from 'react-draggable'
 import PropTypes from 'prop-types'
 
+import propagateNodeValue from '../util/propagateNodeValue'
+
 /**
  * Function Component that returns a node
  * @function
@@ -18,9 +20,15 @@ const Node = props => {
 	 */
 	const handleChange = e => {
 		setNum(e.target.value)
-		console.log('Change Node State')
 		const updateNodes = { ...props.nodes }
 		updateNodes[props.id].value = parseFloat(e.target.value)
+
+		// if node has outgoing link, propagate node value change
+		if (updateNodes[props.id].portOut !== '') {
+			const out = updateNodes[props.links[updateNodes[props.id].portOut].to].id
+			propagateNodeValue(props.links, updateNodes, out)
+		}
+
 		props.setNodes(updateNodes)
 		props.setJson(JSON.stringify({ nodes: updateNodes, links: props.links }))
 	}
@@ -35,11 +43,18 @@ const Node = props => {
 		e.target.focus()
 	}
 
+	const handleDisplayValue = () => {
+		props.setDisplayValue(props.value)
+	}
+
 	// Switch display content based on symbol
 	let content, ports
 	if (['+', '-', '÷', '×'].includes(props.symbol)) {
 		content = (
-			<div className='handle' style={styles.content}>
+			<div
+				className='handle'
+				style={styles.content}
+				onClick={handleDisplayValue}>
 				{props.symbol}
 			</div>
 		)
@@ -62,7 +77,10 @@ const Node = props => {
 		)
 	} else {
 		content = (
-			<div className='handle' style={styles.content}>
+			<div
+				className='handle'
+				style={styles.content}
+				onClick={handleDisplayValue}>
 				<input
 					type='number'
 					value={num}

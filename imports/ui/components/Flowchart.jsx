@@ -5,6 +5,7 @@ import Node_Model from '../models/node'
 import Link_Model from '../models/link'
 import Node from './Node'
 import EleBar from './EleBar'
+import propagateNodeValue from '../util/propagateNodeValue'
 
 /**
  * Funtion Component that contains elements bar and flowchart
@@ -16,6 +17,7 @@ const Flowchart = props => {
 	const [nodes, setNodes] = useState({})
 	const [links, setLinks] = useState({})
 	const [tempLink, setTempLink] = useState(null)
+	const [displayValue, setDisplayValue] = useState(0)
 
 	const nodesOnCanvas = []
 	const linksOnCanvas = []
@@ -177,7 +179,7 @@ const Flowchart = props => {
 				// Calculate operator node value once two args are ready
 				if (Object.keys(to.portIn).length === 1) {
 					nodeUpdate[to.id].portIn[link.id] = '2'
-					propagateNodeValueUpdate(linkUpdate, nodeUpdate, to.id)
+					propagateNodeValue(linkUpdate, nodeUpdate, to.id)
 				} else {
 					nodeUpdate[to.id].portIn[link.id] = '1'
 				}
@@ -192,46 +194,6 @@ const Flowchart = props => {
 			}
 		}
 		setTempLink(null)
-	}
-
-	/**
-	 * Propagete node value when the first node have two args
-	 * @function
-	 * @param { Object } nodes
-	 * @param { string } id
-	 */
-	const propagateNodeValueUpdate = (links, nodes, id) => {
-		const keys = Object.keys(nodes[id].portIn)
-		if (keys.length === 2) {
-			const arg1 =
-				nodes[id].portIn[keys[0]] === '1'
-					? nodes[links[keys[0]].from].value
-					: nodes[links[keys[1]].from].value
-
-			const arg2 =
-				nodes[id].portIn[keys[0]] === '1'
-					? nodes[links[keys[1]].from].value
-					: nodes[links[keys[0]].from].value
-			switch (nodes[id].symbol) {
-				case '+':
-					nodes[id].value = arg1 + arg2
-					break
-				case '-':
-					nodes[id].value = arg1 - arg2
-					break
-				case '×':
-					nodes[id].value = arg1 * arg2
-					break
-				case '÷':
-					nodes[id].value = arg1 / arg2
-					break
-			}
-
-			// If node has outgoing link, propagate result
-			if (nodes[id].portOut !== '') {
-				propagateNodeValueUpdate(links, nodes, links[nodes[id].portOut].to)
-			}
-		}
 	}
 
 	/**
@@ -271,6 +233,7 @@ const Flowchart = props => {
 					setNodes={setNodes}
 					setJson={props.setJson}
 					setTempLink={setTempLink}
+					setDisplayValue={setDisplayValue}
 				/>
 			)
 		}
@@ -340,6 +303,8 @@ const Flowchart = props => {
 					{linksOnCanvas}
 				</svg>
 				<div style={styles.nodes}>{nodesOnCanvas}</div>
+				<div style={styles.floatR}>Click operator to inspect</div>
+				<div style={styles.floatR}>{displayValue}</div>
 			</div>
 			<hr />
 		</div>
@@ -368,6 +333,11 @@ const styles = {
 		width: '100%',
 		top: '0px',
 		left: '0px'
+	},
+	floatR: {
+		float: 'right',
+		fontSize: '1.5rem',
+		clear: 'both'
 	}
 }
 
