@@ -10,10 +10,45 @@ import Flowchart from './Flowchart'
 Enzyme.configure({ adapter: new Adapter() })
 
 if (Meteor.isClient) {
+	// Move Simulation for Draggable
+	const mouseMove = (x, y, node) => {
+		const doc = node ? node.ownerDocument : document
+		const evt = doc.createEvent('MouseEvents')
+		evt.initMouseEvent(
+			'mousemove',
+			true,
+			true,
+			window,
+			0,
+			0,
+			0,
+			x,
+			y,
+			false,
+			false,
+			false,
+			false,
+			0,
+			null
+		)
+		doc.dispatchEvent(evt)
+		return evt
+	}
+
+	const simulateMove = (drag, fromX, fromY, toX, toY) => {
+		const node = ReactDOM.findDOMNode(drag)
+
+		Simulate.mouseDown(node, { clientX: fromX, clientY: fromX })
+		mouseMove(toX, toY, node)
+		Simulate.mouseUp(node)
+	}
+
 	const setup = (props = {}) => {
 		props.setJson = () => {}
 		return mount(<Flowchart {...props} />)
 	}
+
+	// Test Begins Here
 	describe('Flowchart', () => {
 		it('renders without crashing', () => {
 			const div = document.createElement('div')
@@ -31,121 +66,99 @@ if (Meteor.isClient) {
 			expect(node.text()).to.contain('-')
 		})
 
-		//TODO
 		it('adds a link when you click one port and drop on another element', () => {
 			const container = document.createElement('div')
 			document.body.appendChild(container)
 			ReactDOM.render(<Flowchart setJson={() => {}} />, container)
 
+			const canvas = container.querySelector("[data-test='canvas']")
+
+			// Create node1
 			const el1 = container.querySelector("[data-test='ele-num']")
 
 			Simulate.click(el1)
 
+			// Move node1 to the right
 			const numHandle = container.querySelector("[data-test='node-handle_']")
-			const canvas = container.querySelector("[data-test='canvas']")
+			const out = container.querySelector("[data-test='port-out']")
 
-			Simulate.dragStart(numHandle, {
-				pageX: 30,
-				pageY: 140
-			})
-			Simulate.drag(numHandle, {
-				pageX: 300,
+			simulateMove(numHandle, 0, 0, 150, 0)
+
+			// Create node2
+			const el2 = container.querySelector("[data-test='ele-plus']")
+
+			Simulate.click(el2)
+
+			// mouse down on out node1 port
+			Simulate.mouseDown(out)
+
+			Simulate.mouseMove(canvas, {
+				pageX: 50,
 				pageY: 150
 			})
 
-			Simulate.drop(numHandle, {
-				pageX: 300,
+			// mouse up on el2
+			Simulate.mouseUp(canvas, {
+				pageX: 50,
 				pageY: 150
 			})
 
-			// const el2 = container.querySelector("[data-test='ele-plus']")
-
-			// Simulate.click(el2)
-
-			// // mouse down on out port
-			// Simulate.mouseDown(out, {
-			// 	pageX: 0,
-			// 	pageY: 0
-			// })
-
-			// // mouse down on canvas
-			// Simulate.mouseDown(canvas, {
-			// 	pageX: 0,
-			// 	pageY: 0
-			// })
-
-			// let tempLink = container.querySelectorAll("[data-test='link-temp']")
-			// expect(tempLink.length).to.equal(1)
-
-			// Simulate.mouseMove(canvas, {
-			// 	pageX: 0,
-			// 	pageY: 0
-			// })
-
-			// tempLink = container.querySelectorAll("[data-test='link-temp']")
-			// expect(tempLink.length).to.equal(1)
-
-			// Simulate.mouseUp(canvas, {
-			// 	pageX: 50,
-			// 	pageY: 150
-			// })
-
-			// const link = container.querySelectorAll("[data-test='link']")
-			// expect(link.length).to.equal(1)
+			// There should be a new link on canvas
+			const link = container.querySelectorAll("[data-test='link']")
+			expect(link.length).to.equal(1)
+			ReactDOM.unmountComponentAtNode(container)
 		})
 
-		// TODO
-		it('deletes a node and links on this node', () => {})
-		// 	const container = document.createElement('div')
-		// 	document.body.appendChild(container)
-		// 	ReactDOM.render(<Flowchart setJson={() => {}} />, container)
+		it('deletes a node and links on this node', () => {
+			const container = document.createElement('div')
+			document.body.appendChild(container)
+			ReactDOM.render(<Flowchart setJson={() => {}} />, container)
 
-		// 	const el1 = container.querySelector("[data-test='ele-num']")
+			const canvas = container.querySelector("[data-test='canvas']")
 
-		// 	Simulate.click(el1)
+			// Create node1
+			const el1 = container.querySelector("[data-test='ele-num']")
 
-		// 	const el2 = container.querySelector("[data-test='ele-plus']")
+			Simulate.click(el1)
 
-		// 	Simulate.click(el2)
+			// Move node1 to the right
+			const numHandle = container.querySelector("[data-test='node-handle_']")
+			const out = container.querySelector("[data-test='port-out']")
 
-		// 	let node = container.querySelector("[data-test='node-draggable']")
-		// 	const out = node.querySelector("[data-test='port-out']")
-		// 	const canvas = container.querySelector("[data-test='canvas']")
+			simulateMove(numHandle, 0, 0, 150, 0)
 
-		// 	Simulate.mouseDown(out, {
-		// 		pageX: 0,
-		// 		pageY: 0
-		// 	})
+			// Create node2
+			const el2 = container.querySelector("[data-test='ele-plus']")
 
-		// 	Simulate.mouseDown(canvas, {
-		// 		pageX: 0,
-		// 		pageY: 0
-		// 	})
+			Simulate.click(el2)
 
-		// 	let tempLink = container.querySelectorAll("[data-test='link-temp']")
-		// 	expect(tempLink.length).to.equal(1)
+			// mouse down on out node1 port
+			Simulate.mouseDown(out)
 
-		// 	Simulate.mouseMove(canvas, {
-		// 		pageX: 0,
-		// 		pageY: 0
-		// 	})
+			Simulate.mouseMove(canvas, {
+				pageX: 50,
+				pageY: 150
+			})
 
-		// 	Simulate.mouseUp(canvas, {
-		// 		pageX: 50,
-		// 		pageY: 150
-		// 	})
+			// mouse up on node2
+			Simulate.mouseUp(canvas, {
+				pageX: 50,
+				pageY: 150
+			})
 
-		// 	let links = container.querySelectorAll("[data-test='link']")
-		// 	expect(links.length).to.equal(1)
-		// 	expect(nodes.length).to.equal(2)
-		// 	const delEl = nodes[0].querySelector("[data-test='delete']")
+			// Delete node2 and link
+			let del = container.querySelectorAll("[data-test='delete+']")
+			let link = container.querySelectorAll("[data-test='link']")
 
-		// 	Simulate.click(delEl)
+			expect(del.length).to.equal(1)
+			expect(link.length).to.equal(1)
 
-		// 	nodes = container.querySelectorAll("[data-test='node-draggable']")
-		// 	links = container.querySelectorAll("[data-test='link']")
-		// 	expect(links.length).to.equal(0)
-		// 	expect(nodes.length).to.equal(1)
-		// })
+			Simulate.click(del[0])
+
+			del = container.querySelectorAll("[data-test='delete+']")
+			link = container.querySelectorAll("[data-test='link']")
+			expect(del.length).to.equal(0)
+			expect(link.length).to.equal(0)
+		})
 	})
 }

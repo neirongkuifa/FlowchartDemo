@@ -127,7 +127,7 @@ const Node = props => {
 				id={props.id}
 				style={props.symbol === '_' ? styles.inputContainer : styles.container}>
 				<div
-					data-test='delete'
+					data-test={'delete' + props.symbol}
 					style={styles.delete}
 					onClick={() => props.handleDelete(props.id)}>
 					Delete
