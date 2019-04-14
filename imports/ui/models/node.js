@@ -12,11 +12,6 @@ class Node {
 		this.symbol = symbol
 		this.value = value
 	}
-
-	set(x, y) {
-		this.x = x
-		this.y = y
-	}
 }
 
 export default Node
