@@ -43,6 +43,10 @@ const Node = props => {
 		e.target.focus()
 	}
 
+	/**
+	 * Display Node Value when clicked
+	 * @function handleDisplayValue
+	 */
 	const handleDisplayValue = () => {
 		props.setDisplayValue(props.value)
 	}
@@ -53,6 +57,7 @@ const Node = props => {
 		content = (
 			<div
 				className='handle'
+				data-test={'node-handle' + props.symbol}
 				style={styles.content}
 				onClick={handleDisplayValue}>
 				{props.symbol}
@@ -79,6 +84,7 @@ const Node = props => {
 		content = (
 			<div
 				className='handle'
+				data-test={'node-handle' + props.symbol}
 				style={styles.content}
 				onClick={handleDisplayValue}>
 				<input
@@ -117,7 +123,7 @@ const Node = props => {
 			onDrag={(e, position) => props.handleDrag(props.id, position)}
 			scale={1}>
 			<div
-				data-test={'node-draggable' + props.symbol}
+				data-test='node-draggable'
 				id={props.id}
 				style={props.symbol === '_' ? styles.inputContainer : styles.container}>
 				<div
@@ -136,11 +142,16 @@ const Node = props => {
 // Props Type Check
 Node.propTypes = {
 	id: PropTypes.string,
+	nodes: PropTypes.object,
+	links: PropTypes.object,
 	x: PropTypes.number,
 	y: PropTypes.number,
 	handleDelete: PropTypes.func,
 	handleDrag: PropTypes.func,
-	setTempLink: PropTypes.func
+	setNodes: PropTypes.func,
+	setJson: PropTypes.func,
+	setTempLink: PropTypes.func,
+	setDisplayValue: PropTypes.func
 }
 
 // Style Info

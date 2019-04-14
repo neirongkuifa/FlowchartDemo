@@ -32,54 +32,67 @@ if (Meteor.isClient) {
 		})
 
 		//TODO
-		it('adds a link when you click one port and drop on another element', () => {})
-		// 	const container = document.createElement('div')
-		// 	document.body.appendChild(container)
-		// 	ReactDOM.render(<Flowchart setJson={() => {}} />, container)
+		it('adds a link when you click one port and drop on another element', () => {
+			const container = document.createElement('div')
+			document.body.appendChild(container)
+			ReactDOM.render(<Flowchart setJson={() => {}} />, container)
 
-		// 	const el1 = container.querySelector("[data-test='ele-num']")
+			const el1 = container.querySelector("[data-test='ele-num']")
 
-		// 	Simulate.click(el1)
+			Simulate.click(el1)
 
-		// 	const el2 = container.querySelector("[data-test='ele-plus']")
+			const numHandle = container.querySelector("[data-test='node-handle_']")
+			const canvas = container.querySelector("[data-test='canvas']")
 
-		// 	Simulate.click(el2)
+			Simulate.dragStart(numHandle, {
+				pageX: 30,
+				pageY: 140
+			})
+			Simulate.drag(numHandle, {
+				pageX: 300,
+				pageY: 150
+			})
 
-		// 	const node = container.querySelector("[data-test='node-draggable_']")
-		// 	const out = node.querySelector("[data-test='port-out']")
-		// 	const canvas = container.querySelector("[data-test='canvas']")
+			Simulate.drop(numHandle, {
+				pageX: 300,
+				pageY: 150
+			})
 
-		// 	// mouse down on out port
-		// 	Simulate.mouseDown(out, {
-		// 		pageX: 0,
-		// 		pageY: 0
-		// 	})
+			// const el2 = container.querySelector("[data-test='ele-plus']")
 
-		// 	// mouse down on canvas
-		// 	Simulate.mouseDown(canvas, {
-		// 		pageX: 0,
-		// 		pageY: 0
-		// 	})
+			// Simulate.click(el2)
 
-		// 	let tempLink = container.querySelectorAll("[data-test='link-temp']")
-		// 	expect(tempLink.length).to.equal(1)
+			// // mouse down on out port
+			// Simulate.mouseDown(out, {
+			// 	pageX: 0,
+			// 	pageY: 0
+			// })
 
-		// 	Simulate.mouseMove(canvas, {
-		// 		pageX: 0,
-		// 		pageY: 0
-		// 	})
+			// // mouse down on canvas
+			// Simulate.mouseDown(canvas, {
+			// 	pageX: 0,
+			// 	pageY: 0
+			// })
 
-		// 	tempLink = container.querySelectorAll("[data-test='link-temp']")
-		// 	expect(tempLink.length).to.equal(1)
+			// let tempLink = container.querySelectorAll("[data-test='link-temp']")
+			// expect(tempLink.length).to.equal(1)
 
-		// 	Simulate.mouseUp(canvas, {
-		// 		pageX: 50,
-		// 		pageY: 150
-		// 	})
+			// Simulate.mouseMove(canvas, {
+			// 	pageX: 0,
+			// 	pageY: 0
+			// })
 
-		// 	const link = container.querySelectorAll("[data-test='link']")
-		// 	expect(link.length).to.equal(1)
-		// })
+			// tempLink = container.querySelectorAll("[data-test='link-temp']")
+			// expect(tempLink.length).to.equal(1)
+
+			// Simulate.mouseUp(canvas, {
+			// 	pageX: 50,
+			// 	pageY: 150
+			// })
+
+			// const link = container.querySelectorAll("[data-test='link']")
+			// expect(link.length).to.equal(1)
+		})
 
 		// TODO
 		it('deletes a node and links on this node', () => {})
@@ -95,7 +108,7 @@ if (Meteor.isClient) {
 
 		// 	Simulate.click(el2)
 
-		// 	let node = container.querySelector("[data-test='node-draggable_']")
+		// 	let node = container.querySelector("[data-test='node-draggable']")
 		// 	const out = node.querySelector("[data-test='port-out']")
 		// 	const canvas = container.querySelector("[data-test='canvas']")
 
@@ -129,7 +142,7 @@ if (Meteor.isClient) {
 
 		// 	Simulate.click(delEl)
 
-		// 	nodes = container.querySelectorAll("[data-test='node-draggable+']")
+		// 	nodes = container.querySelectorAll("[data-test='node-draggable']")
 		// 	links = container.querySelectorAll("[data-test='link']")
 		// 	expect(links.length).to.equal(0)
 		// 	expect(nodes.length).to.equal(1)

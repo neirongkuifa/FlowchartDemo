@@ -50,13 +50,7 @@ const Flowchart = props => {
 		const nodeUpdate = { ...nodes }
 		const linkUpdate = { ...links }
 
-		// if node is an arg of an operator, make sure the left arg is always the first arg
 		if (nodes[id].portOut !== '') {
-			const keys = Object.keys(nodeUpdate[links[nodes[id].portOut].to].portIn)
-			if (keys.length === 2) {
-				nodeUpdate[links[nodes[id].portOut].to].portIn[keys[0]] = '1'
-				nodeUpdate[links[nodes[id].portOut].to].portIn[keys[1]] = '1'
-			}
 		}
 
 		// Remove incoming links
@@ -67,10 +61,23 @@ const Flowchart = props => {
 			delete linkUpdate[key]
 		}
 
-		// if node's out port is nonempty, Remove outgoing links
+		// if node's out port is nonempty, Remove outgoing links and update destnode
 		if (node.portOut !== '') {
-			const to = links[node.portOut].to
-			delete nodeUpdate[to].portIn[node.portOut]
+			// if destnode has two args, make sure the left arg is always the first arg
+			const destId = links[node.portOut].to
+			const destNode = nodeUpdate[destId]
+			const keys = Object.keys(destNode.portIn)
+			if (keys.length === 2) {
+				destNode.portIn[keys[0]] = '1'
+				destNode.portIn[keys[1]] = '1'
+
+				// Also update destnode value and propagate
+				delete destNode.portIn[node.portOut]
+				nodeUpdate[destId].value = 0
+				propagateNodeValue(linkUpdate, nodeUpdate, destId)
+			}
+
+			delete destNode.portIn[node.portOut]
 			delete linkUpdate[node.portOut]
 		}
 
@@ -94,7 +101,8 @@ const Flowchart = props => {
 	 */
 	const handleDrag = (id, position) => {
 		const update = { ...nodes }
-		update[id].set(position.x, position.y)
+		update[id].x = position.x
+		update[id].y = position.y
 		props.setJson(
 			JSON.stringify({
 				nodes: Object.values(update),
@@ -348,6 +356,7 @@ const styles = {
 	}
 }
 
+// PropTypes check
 Flowchart.propTypes = {
 	setJson: PropTypes.func
 }
