@@ -11,7 +11,7 @@ if (Meteor.isClient) {
 	const setup = (props = {}) => {
 		return shallow(<DisplayJSON {...props} />)
 	}
-	describe('App', () => {
+	describe('JSON display window', () => {
 		it('renders without crashing', () => {
 			const div = document.createElement('div')
 			ReactDOM.render(<DisplayJSON />, div)

@@ -3,18 +3,18 @@ import ReactDOM from 'react-dom'
 import Enzyme, { shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
-import EleBar from './EleBar'
+import Node from './Node'
 
 Enzyme.configure({ adapter: new Adapter() })
 
 if (Meteor.isClient) {
 	const setup = (props = {}) => {
-		return shallow(<EleBar {...props} />)
+		return shallow(<Node {...props} />)
 	}
-	describe('Element Bar', () => {
+	describe('Node', () => {
 		it('renders without crashing', () => {
 			const div = document.createElement('div')
-			ReactDOM.render(<EleBar />, div)
+			ReactDOM.render(<Node />, div)
 			ReactDOM.unmountComponentAtNode(div)
 		})
 	})

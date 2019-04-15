@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 
 /**
  * Function Component that only re-render when props change
- * @function
- * @param {*} props
+ * @function DisplayJSON
+ * @param {Object} props
  * @returns {Object}
  */
 const DisplayJSON = props => {
-	return <div>{props.json}</div>
+	return <div data-test='json'>{props.json}</div>
 }
 
 DisplayJSON.propTypes = {

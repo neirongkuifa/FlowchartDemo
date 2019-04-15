@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom'
 import { expect } from 'chai'
 import Enzyme, { shallow, mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
+import { Simulate } from 'react-dom/test-utils'
 
 import App from './App'
+import simulateNodeNLink from './util/simulateNodeNLink'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -41,9 +43,45 @@ if (Meteor.isClient) {
 			expect(json.text()).to.contain(node.props().id)
 		})
 
-		// TODO
-		it('updates json when there is a new link')
+		it('updates json when there is a new link', () => {
+			const container = document.createElement('div')
+			document.body.appendChild(container)
+			ReactDOM.render(<App />, container)
 
-		it('updates json when delete a node')
+			let displayjson = container.querySelector("[data-test='json']")
+			expect(displayjson.innerHTML).to.equal('')
+
+			simulateNodeNLink('_', '+', container)
+
+			displayjson = container.querySelector("[data-test='json']")
+			json = JSON.parse(displayjson.innerHTML)
+			expect(json.links.length).to.equal(1)
+
+			ReactDOM.unmountComponentAtNode(container)
+		})
+
+		it('updates json when delete a node', () => {
+			const container = document.createElement('div')
+			document.body.appendChild(container)
+			ReactDOM.render(<App />, container)
+
+			simulateNodeNLink('_', '+', container)
+
+			displayjson = container.querySelector("[data-test='json']")
+			json = JSON.parse(displayjson.innerHTML)
+			expect(json.nodes.length).to.equal(2)
+			expect(json.links.length).to.equal(1)
+
+			const del = container.querySelector("[data-test='delete_']")
+
+			Simulate.click(del)
+
+			displayjson = container.querySelector("[data-test='json']")
+			json = JSON.parse(displayjson.innerHTML)
+			expect(json.nodes.length).to.equal(1)
+			expect(json.links.length).to.equal(0)
+
+			ReactDOM.unmountComponentAtNode(container)
+		})
 	})
 }
