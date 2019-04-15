@@ -43,8 +43,4 @@ Notice that link to itself, link to operators that already have two args and lin
 
 ### Delete node by clicking delete button on the top right corner of node
 
-![](./images/deletion.gif)
-
-### Support synchronous value update and propagation when node value changed or node deleted
-
-![](./images/realtime.gif)
+![](./images/deletion.gif))
