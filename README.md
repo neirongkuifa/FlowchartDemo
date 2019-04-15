@@ -26,10 +26,16 @@ Overall Effect
 ![](./images/overall.gif)
 
 Click elements on element bar to get a new instance of node
-![](./images/dragdroptoadd.gif)
+![](./images/add.gif)
 
-Inspect node value by clicking node. Node value is shown on the top right corner
+Drag from out and drop on another node to link
+![](./images/link)
+
+Inspect node id by clicking node. Node Info is shown on the top right corner
 ![](./images/inspection.gif)
+
+Delete node by clicking delete button on the top right corner of node
+![](./images/deletion.gif)
 
 Support synchronous value update and propagation when node value changed or node deleted
 ![](./images/realtime.gif)

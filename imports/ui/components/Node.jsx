@@ -48,7 +48,9 @@ const Node = props => {
 	 * @function handleDisplayValue
 	 */
 	const handleDisplayValue = () => {
-		props.setDisplayValue(props.value)
+		props.setDisplayValue(
+			'node id: ' + props.id + '  node value: ' + props.value
+		)
 	}
 
 	// Switch display content based on symbol
@@ -126,11 +128,13 @@ const Node = props => {
 				data-test='node-draggable'
 				id={props.id}
 				style={props.symbol === '_' ? styles.inputContainer : styles.container}>
-				<div
-					data-test={'delete' + props.symbol}
-					style={styles.delete}
-					onClick={() => props.handleDelete(props.id)}>
-					<div style={styles.delbtn}>×</div>
+				<div data-test={'delete' + props.symbol} style={styles.delete}>
+					<div
+						style={styles.delbtn}
+						onClick={() => props.handleDelete(props.id)}>
+						×
+					</div>
+					<div style={styles.peek}>val:{props.value}</div>
 				</div>
 				{content}
 				<div style={styles.ports}>{ports}</div>
@@ -176,15 +180,23 @@ const styles = {
 	},
 	delete: {
 		position: 'relative',
-		height: '20px'
+		height: '20px',
+		borderBottom: 'solid 1px black'
 	},
 	delbtn: {
-		float: 'right',
-		paddingRight: '2px',
+		position: 'absolute',
+		padding: '1px',
 		paddingLeft: '2px',
+		paddingRight: '2px',
 		color: 'red',
 		borderLeft: 'solid 1px black',
-		borderBottom: 'solid 1px black'
+		top: '0px',
+		right: '0px'
+	},
+	peek: {
+		float: 'left',
+		fontSize: '1rem',
+		paddingLeft: '1px'
 	},
 	content: {
 		height: '50px',
