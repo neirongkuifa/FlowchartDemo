@@ -43,4 +43,14 @@ Notice that link to itself, link to operators that already have two args and lin
 
 ### Delete node by clicking delete button on the top right corner of node
 
-![](./images/deletion.gif))
+![](./images/deletion.gif)
+
+## features
+
+### When you delete one of two args, the left one automatically becomes the first arg
+
+![](./images/argschange.gif)
+
+### Synchronous value change and propagation
+
+![](./images/realtime.gif)
