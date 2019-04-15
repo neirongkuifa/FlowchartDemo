@@ -23,6 +23,17 @@ const Flowchart = props => {
 	const linksOnCanvas = []
 
 	/**
+	 * Drop event handler
+	 * @function handleDropEle
+	 * @param {Object} e
+	 */
+	const handleDropEle = e => {
+		e.preventDefault()
+		const symbol = e.dataTransfer.getData('symbol')
+		handleClickEle(symbol)
+	}
+
+	/**
 	 * Add a node and update json
 	 * @function handleClickEle
 	 * @param {string} sign
@@ -315,6 +326,10 @@ const Flowchart = props => {
 				data-test='canvas'
 				id='canvas'
 				style={styles.canvas}
+				onDragOver={e => e.preventDefault()}
+				onDrop={e => {
+					handleDropEle(e)
+				}}
 				onMouseDown={e => handleMouseDown(e)}
 				onMouseMove={e => handleMouseMove(e)}
 				onMouseUp={e => handleMouseUp(e)}>

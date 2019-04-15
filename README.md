@@ -26,8 +26,9 @@ TEST_BROWSER_DRIVER=chrome TEST_WATCH=1 meteor test --driver-package meteortesti
 
 ![](./images/overall.gif)
 
-### Click elements on element bar to get a new instance of node
+### Drag or Click elements on element bar to get a new instance of node
 
+![](./images/dragel.gif)
 ![](./images/add.gif)
 
 ### Drag from out and drop on another node to link
