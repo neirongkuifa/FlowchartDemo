@@ -32,6 +32,8 @@ TEST_BROWSER_DRIVER=chrome TEST_WATCH=1 meteor test --driver-package meteortesti
 
 ### Drag from out and drop on another node to link
 
+Notice that link to itself, link to operators that already have two args and link to Number node is not permitted.
+
 ![](./images/link.gif)
 
 ### Inspect node id by clicking node. Node Info is shown on the top right corner
