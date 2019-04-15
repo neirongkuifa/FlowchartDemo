@@ -39,7 +39,9 @@ const Flowchart = props => {
 	/**
 	 * Add a node and update json
 	 * @function handleClickEle
-	 * @param {string} sign
+	 * @param {string} symbol
+	 * @param {number} x - Drop position
+	 * @param {number} y - Drop position
 	 */
 	const handleClickEle = (symbol, x = 0, y = 0) => {
 		const node = new Node_Model(x, y, symbol, 0)
