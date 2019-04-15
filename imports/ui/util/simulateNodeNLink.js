@@ -47,13 +47,13 @@ const simulateNodeNLink = (node1, node2, container, offsetTop = 250) => {
 	Simulate.mouseDown(out)
 
 	Simulate.mouseMove(canvas, {
-		pageX: 50,
+		pageX: 30,
 		pageY: offsetTop
 	})
 
 	// mouse up on el2
 	Simulate.mouseUp(canvas, {
-		pageX: 50,
+		pageX: 20,
 		pageY: offsetTop
 	})
 }

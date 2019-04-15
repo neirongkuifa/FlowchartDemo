@@ -22,20 +22,26 @@ TEST_BROWSER_DRIVER=chrome TEST_WATCH=1 meteor test --driver-package meteortesti
 
 ## Usage
 
-Overall Effect
+### Overall Effect
+
 ![](./images/overall.gif)
 
-Click elements on element bar to get a new instance of node
+### Click elements on element bar to get a new instance of node
+
 ![](./images/add.gif)
 
-Drag from out and drop on another node to link
-![](./images/link)
+### Drag from out and drop on another node to link
 
-Inspect node id by clicking node. Node Info is shown on the top right corner
+![](./images/link.gif)
+
+### Inspect node id by clicking node. Node Info is shown on the top right corner
+
 ![](./images/inspection.gif)
 
-Delete node by clicking delete button on the top right corner of node
+### Delete node by clicking delete button on the top right corner of node
+
 ![](./images/deletion.gif)
 
-Support synchronous value update and propagation when node value changed or node deleted
+### Support synchronous value update and propagation when node value changed or node deleted
+
 ![](./images/realtime.gif)
