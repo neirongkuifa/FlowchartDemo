@@ -128,8 +128,9 @@ const Node = props => {
 				data-test='node-draggable'
 				id={props.id}
 				style={props.symbol === '_' ? styles.inputContainer : styles.container}>
-				<div data-test={'delete' + props.symbol} style={styles.delete}>
+				<div style={styles.delContainer}>
 					<div
+						data-test={'delete' + props.symbol}
 						style={styles.delbtn}
 						onClick={() => props.handleDelete(props.id)}>
 						×
@@ -178,7 +179,7 @@ const styles = {
 		top: '0px',
 		userSelect: 'none'
 	},
-	delete: {
+	delContainer: {
 		position: 'relative',
 		height: '20px',
 		borderBottom: 'solid 1px black'
