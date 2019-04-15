@@ -29,6 +29,9 @@ const Flowchart = props => {
 	 */
 	const handleClickEle = symbol => {
 		const node = new Node_Model(0, 0, symbol, 0)
+		if (symbol != '_') {
+			node.value = NaN
+		}
 		const update = { ...nodes }
 		update[node.id] = node
 		setNodes(update)
@@ -72,9 +75,9 @@ const Flowchart = props => {
 				destNode.portIn[keys[1]] = '1'
 
 				// Also update destnode value and propagate
-				delete destNode.portIn[node.portOut]
-				nodeUpdate[destId].value = 0
+				nodeUpdate[node.id].value = NaN
 				propagateNodeValue(linkUpdate, nodeUpdate, destId)
+				delete destNode.portIn[node.portOut]
 			}
 
 			delete destNode.portIn[node.portOut]

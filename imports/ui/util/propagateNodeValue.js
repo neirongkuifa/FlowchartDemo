@@ -39,7 +39,7 @@ const propagateNodeValue = (
 					errHandler(
 						'arg2 of Divide cannot be 0, please enter a different value!'
 					)
-					arg2 = 1
+					arg2 = NaN
 				}
 				nodes[id].value = arg1 / arg2
 				break

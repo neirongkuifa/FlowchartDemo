@@ -195,8 +195,10 @@ const styles = {
 		right: '0px'
 	},
 	peek: {
-		float: 'left',
-		fontSize: '1rem',
+		position: 'absolute',
+		top: '2px',
+		left: '0px',
+		fontSize: '0.7rem',
 		paddingLeft: '1px'
 	},
 	content: {
