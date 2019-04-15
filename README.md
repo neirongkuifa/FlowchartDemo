@@ -27,3 +27,9 @@ Overall Effect
 
 Click elements on element bar to get a new instance of node
 ![](./images/dragdroptoadd.gif)
+
+Inspect node value by clicking node. Node value is shown on the top right corner
+![](./images/inspection.gif)
+
+Support synchronous value update and propagation when node value changed or node deleted
+![](./images/realtime.gif)
