@@ -165,7 +165,7 @@ const Flowchart = props => {
 			const mouseY = e.pageY - canvas.offsetTop
 			const to = inNode(mouseX, mouseY)
 
-			// Cannot establish link when link to itself, link to a number, target has two args, target does not exist
+			// Does not allow establishing link when link to itself, link to a number, target has two args, target does not exist
 
 			if (
 				to &&
@@ -275,6 +275,7 @@ const Flowchart = props => {
 					stroke={'black'}
 					strokeWidth={'2'}
 					fill={'none'}
+					style={styles.path}
 				/>
 			)
 		}
@@ -351,9 +352,10 @@ const styles = {
 	},
 	floatR: {
 		float: 'right',
-		fontSize: '1.5rem',
+		fontSize: '1.2rem',
 		clear: 'both'
-	}
+	},
+	path: {}
 }
 
 // PropTypes check
