@@ -28,9 +28,12 @@ const Flowchart = props => {
 	 * @param {Object} e
 	 */
 	const handleDropEle = e => {
+		const canvas = document.getElementById('canvas')
+		const x = e.pageX - canvas.offsetLeft
+		const y = e.pageY - canvas.offsetTop
 		e.preventDefault()
 		const symbol = e.dataTransfer.getData('symbol')
-		handleClickEle(symbol)
+		handleClickEle(symbol, x, y)
 	}
 
 	/**
@@ -38,8 +41,8 @@ const Flowchart = props => {
 	 * @function handleClickEle
 	 * @param {string} sign
 	 */
-	const handleClickEle = symbol => {
-		const node = new Node_Model(0, 0, symbol, 0)
+	const handleClickEle = (symbol, x = 0, y = 0) => {
+		const node = new Node_Model(x, y, symbol, 0)
 		if (symbol != '_') {
 			node.value = NaN
 		}
