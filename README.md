@@ -22,7 +22,7 @@ TEST_BROWSER_DRIVER=chrome TEST_WATCH=1 meteor test --driver-package meteortesti
 
 ## Usage
 
-Overall Effect
+<!-- Overall Effect
 ![](./images/overall.gif)
 
 Click elements on element bar to get a new instance of node
@@ -38,4 +38,4 @@ Delete node by clicking delete button on the top right corner of node
 ![](./images/deletion.gif)
 
 Support synchronous value update and propagation when node value changed or node deleted
-![](./images/realtime.gif)
+![](./images/realtime.gif) -->
