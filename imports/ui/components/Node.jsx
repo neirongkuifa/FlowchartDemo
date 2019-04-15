@@ -130,7 +130,7 @@ const Node = props => {
 					data-test={'delete' + props.symbol}
 					style={styles.delete}
 					onClick={() => props.handleDelete(props.id)}>
-					Delete
+					<div style={styles.delbtn}>×</div>
 				</div>
 				{content}
 				<div style={styles.ports}>{ports}</div>
@@ -175,7 +175,15 @@ const styles = {
 		userSelect: 'none'
 	},
 	delete: {
-		height: '20px',
+		position: 'relative',
+		height: '20px'
+	},
+	delbtn: {
+		float: 'right',
+		paddingRight: '2px',
+		paddingLeft: '2px',
+		color: 'red',
+		borderLeft: 'solid 1px black',
 		borderBottom: 'solid 1px black'
 	},
 	content: {

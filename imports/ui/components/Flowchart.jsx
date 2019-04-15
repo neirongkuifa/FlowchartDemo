@@ -351,7 +351,7 @@ const styles = {
 	},
 	floatR: {
 		float: 'right',
-		fontSize: '1rem',
+		fontSize: '1.5rem',
 		clear: 'both'
 	}
 }
