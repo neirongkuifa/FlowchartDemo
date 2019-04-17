@@ -82,4 +82,4 @@ EleBar.propTypes = {
 	handleClickEle: PropTypes.func
 }
 
-export default React.memo(EleBar)
+export default EleBar
