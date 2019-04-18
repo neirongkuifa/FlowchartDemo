@@ -93,6 +93,7 @@ const Node = props => {
 					type='number'
 					value={num}
 					onMouseDown={e => handleFocus(e)}
+					onClick={e => e.stopPropagation()}
 					onChange={e => handleChange(e)}
 				/>
 			</div>
