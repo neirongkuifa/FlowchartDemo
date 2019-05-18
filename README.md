@@ -26,6 +26,16 @@ TEST_BROWSER_DRIVER=chrome TEST_WATCH=1 meteor test --driver-package meteortesti
 
 ![](./images/overall.gif)
 
+## features
+
+### When you delete one of two args, the left one automatically becomes the first arg
+
+![](./images/argschange.gif)
+
+### Synchronous value change and propagation
+
+![](./images/realtime.gif)
+
 ### Drag or Click elements on element bar to get a new instance of node
 
 ![](./images/dragel.gif)
@@ -45,12 +55,4 @@ Notice that link to itself, link to operators that already have two args and lin
 
 ![](./images/deletion.gif)
 
-## features
 
-### When you delete one of two args, the left one automatically becomes the first arg
-
-![](./images/argschange.gif)
-
-### Synchronous value change and propagation
-
-![](./images/realtime.gif)
